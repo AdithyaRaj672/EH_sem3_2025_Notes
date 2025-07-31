@@ -67,6 +67,7 @@ The scanner uses bash's built-in `/dev/tcp/` feature:
 - **Invalid IP**: Script exits with error message
 - **Connection failures**: Suppressed with `2>/dev/null`
 - **Timeouts**: Prevented with `timeout` command
+- **Long Execution Time**: The programs takes a lot time to scan all the ports in comparision with nmap scanning
 
 ### Output Format
 - **Console**: Real-time display of open ports
@@ -75,19 +76,19 @@ The scanner uses bash's built-in `/dev/tcp/` feature:
 ## Usage Instructions
 
 ### Prerequisites
-- Bash shell (Linux/macOS/WSL)
+- Bash shell (Kali linux)
 - Network connectivity to target
-- Permission to make outbound connections
+- Permission to make outbound connections(I am doing this on a legal IP Address)
 
 ### Running the Scanner
 1. Make the script executable:
    ```bash
-   chmod +x port_scanner.sh
+   chmod +x scan_ip.sh
    ```
 
 2. Run the scanner:
    ```bash
-   ./port_scanner.sh
+   ./scan_ip.sh
    ```
 
 3. Enter target IP when prompted:
