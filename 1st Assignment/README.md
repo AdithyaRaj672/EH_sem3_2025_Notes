@@ -1,7 +1,14 @@
-# 🔐 Simple Port Scanner in Bash
+# Mini Port Scanner - Assignment Documentation
 
-## 📋 Scenario:
-You're building a lightweight security tool to check for **open ports** on a target machine. This script scans the **top 1000 ports** using Bash, without relying on `nmap`.
+## Overview
+This is a simple bash-based port scanner that checks the top 1000 ports on a target IP address. It's designed as a lightweight network reconnaissance tool for educational purposes. This script scans the **top 1000 ports** using Bash, without relying on `nmap`.
+
+## Features
+- **IP Address Validation**: Basic regex validation for IPv4 addresses
+- **Port Range Scanning**: Scans ports 1-1000 using TCP connections
+- **Logging**: Automatically saves results to timestamped log files
+- **Real-time Output**: Shows open ports as they're discovered
+- **Timeout Protection**: Uses 0.5-second timeout to prevent hanging
 
 ---
 
@@ -47,51 +54,6 @@ done
 
 echo "✅ Scan complete. Results saved to $log_file"
 ```
-# Mini Port Scanner - Assignment Documentation
-
-## Overview
-This is a simple bash-based port scanner that checks the top 1000 ports on a target IP address. It's designed as a lightweight network reconnaissance tool for educational purposes.
-
-## Features
-- **IP Address Validation**: Basic regex validation for IPv4 addresses
-- **Port Range Scanning**: Scans ports 1-1000 using TCP connections
-- **Logging**: Automatically saves results to timestamped log files
-- **Real-time Output**: Shows open ports as they're discovered
-- **Timeout Protection**: Uses 0.5-second timeout to prevent hanging
-
-## Code Structure
-
-### 1. User Input & Validation
-```bash
-read -p "Enter the target IP address: " ip
-if [[ ! $ip =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-    echo "❌ Invalid IP address."
-    exit 1
-fi
-```
-- Prompts user for target IP address
-- Validates IP format using regex pattern
-- Exits with error code 1 if invalid
-
-### 2. Log File Setup
-```bash
-timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
-log_file="scan_${timestamp}.log"
-```
-- Creates unique log filename with timestamp
-- Format: `scan_YYYY-MM-DD_HH-MM-SS.log`
-
-### 3. Port Scanning Loop
-```bash
-for port in {1..1000}; do
-    timeout 0.5 bash -c "echo > /dev/tcp/$ip/$port" 2>/dev/null &&
-    echo "Port $port is OPEN" | tee -a "$log_file"
-done
-```
-- Iterates through ports 1-1000
-- Uses `/dev/tcp/` pseudo-device for TCP connections
-- Suppresses error output with `2>/dev/null`
-- Uses `tee` to display and log results simultaneously
 
 ## Technical Implementation
 
@@ -130,13 +92,12 @@ The scanner uses bash's built-in `/dev/tcp/` feature:
 
 3. Enter target IP when prompted:
    ```
-   Enter the target IP address: 192.168.1.1
+   Enter the target IP address: 142.251.12.139
    ```
 
 ### Example Output
 ```
-🔍 Scanning top 1000 ports on 192.168.1.1...
-Port 22 is OPEN
+🔍 Scanning top 1000 ports on 142.251.12.139...
 Port 80 is OPEN
 Port 443 is OPEN
 ✅ Scan complete. Results saved to scan_2024-01-15_14-30-25.log
@@ -145,9 +106,8 @@ Port 443 is OPEN
 ## Log File Format
 ```
 Scan started at 2024-01-15_14-30-25
-Target: 192.168.1.1
+Target: 142.251.12.139
 --------------------------
-Port 22 is OPEN
 Port 80 is OPEN
 Port 443 is OPEN
 ```
@@ -207,18 +167,6 @@ Port 443 is OPEN
 - Doesn't handle rate limiting
 - No proxy or stealth capabilities
 
-## Possible Enhancements
-
-### Feature Additions
-```bash
-# Parallel scanning example
-for port in {1..1000}; do
-    (timeout 0.5 bash -c "echo > /dev/tcp/$ip/$port" 2>/dev/null &&
-     echo "Port $port is OPEN") &
-done
-wait
-```
-
 ### Error Handling Improvements
 - Hostname resolution support
 - Network connectivity checks
@@ -249,5 +197,3 @@ wait
 
 ## Conclusion
 This mini port scanner demonstrates fundamental network scanning concepts using basic bash features. While simple, it effectively illustrates TCP connection testing, file logging, and user interaction patterns commonly used in network security tools.
-
-**Remember**: Always use responsibly and only on systems you're authorized to test!
